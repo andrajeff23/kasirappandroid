@@ -16,45 +16,74 @@ class OrderScreen extends AppWidget<OrderNotifier, void, void> {
   AppBar? appBarBuild(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      elevation: 5,
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      foregroundColor: Theme.of(context).colorScheme.onSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios_new_outlined)),
-          SizedBox(width: 90,),
-          Icon(Icons.shopping_cart_outlined),
-          const SizedBox(width: 15),
-          Text('Order',style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),),
-                      SizedBox(width: 80,),
+          Icon(Icons.shopping_cart_outlined,
+              color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 12),
+          Text(
+            'Order',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+          ),
         ],
       ),
+      actions: [
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close),
+          style: IconButton.styleFrom(
+            backgroundColor:
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+      ],
     );
   }
 
   @override
   Widget bodyBuild(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SafeArea(
-          child: RefreshIndicator(
-              onRefresh: () => notifier.init(),
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 5,
-                ),
-                itemCount: notifier.listOrder.length,
-                itemBuilder: (context, index) {
-                  final item =
-                      notifier.listOrder[notifier.listOrder.length - 1 - index];
-                  return _itemOrderLayout(context, item);
-                },
-              ))),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.9),
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+              Theme.of(context).colorScheme.surface.withOpacity(0.95),
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 0.3, 0.7, 1.0],
+          ),
+        ),
+        child: RefreshIndicator(
+          onRefresh: () => notifier.init(),
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemCount: notifier.listOrder.length,
+            itemBuilder: (context, index) {
+              final item =
+                  notifier.listOrder[notifier.listOrder.length - 1 - index];
+              return _itemOrderLayout(context, item);
+            },
+          ),
+        ),
+      ),
     );
   }
 
@@ -62,6 +91,12 @@ class OrderScreen extends AppWidget<OrderNotifier, void, void> {
   Widget? floatingActionButtonBuild(BuildContext context) {
     return FloatingActionButton(
       onPressed: () => _onPressAddOrder(context),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: const Icon(Icons.add),
     );
   }
@@ -115,7 +150,8 @@ class OrderScreen extends AppWidget<OrderNotifier, void, void> {
                             fontWeight: FontWeight.bold),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
                     decoration: BoxDecoration(
                         border: Border.all(
                             width: 1,
@@ -127,8 +163,8 @@ class OrderScreen extends AppWidget<OrderNotifier, void, void> {
                       style: GlobalHelper.getTextTheme(context,
                               appTextStyle: AppTextStyle.BODY_SMALL)
                           ?.copyWith(
-                              color:
-                                  GlobalHelper.getColorScheme(context).secondary),
+                              color: GlobalHelper.getColorScheme(context)
+                                  .secondary),
                     ),
                   )
                 ],

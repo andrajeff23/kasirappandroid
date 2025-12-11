@@ -17,86 +17,156 @@ class InputOrderScreen extends AppWidget<InputOrderNotifier, void, void> {
   AppBar? appBarBuild(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      elevation: 5,
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      foregroundColor: Theme.of(context).colorScheme.onSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back_ios_new_outlined)),
-          SizedBox(width: 40,),
-
-          Icon(Icons.add_business_sharp),
-          SizedBox(width: 10,),
-          Text('Create Order',style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),),
+          // IconButton(
+          //   onPressed: () => Navigator.pop(context),
+          //   icon: const Icon(Icons.arrow_back_ios_new_outlined),
+          //   style: IconButton.styleFrom(
+          //     backgroundColor:
+          //         Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+          //     shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(12)),
+          //   ),
+          // ),
+          const SizedBox(width: 16),
+          Icon(Icons.add_business_sharp,
+              color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 12),
+          Text(
+            'Create Order',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+          ),
         ],
       ),
       actions: [
         IconButton(
-            onPressed: () => _showDialogCustomer(context),
-            icon: const Icon(Icons.person))
+          onPressed: () => _showDialogCustomer(context),
+          icon: const Icon(Icons.person),
+          style: IconButton.styleFrom(
+            backgroundColor:
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close),
+        ),
       ],
     );
   }
 
   @override
   Widget bodyBuild(BuildContext context) {
-    return Card(
-      elevation: 3,
-      child: SafeArea(
-          child: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.9),
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+              Theme.of(context).colorScheme.surface.withOpacity(0.95),
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 0.3, 0.7, 1.0],
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               Row(
                 children: [
                   Expanded(
-                      child: Text(
-                    'Produk Dipesan',
-                    style: GlobalHelper.getTextTheme(context,
-                            appTextStyle: AppTextStyle.TITLE_LARGE)
-                        ?.copyWith(
-                            color: GlobalHelper.getColorScheme(context).primary),
-                  )),
+                    child: Text(
+                      'Produk Dipesan',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ),
                   IconButton.outlined(
-                      onPressed: () => _onPressBarcode(context),
-                      icon: const Icon(Icons.qr_code_scanner)),
+                    onPressed: () => _onPressBarcode(context),
+                    icon: const Icon(Icons.qr_code_scanner),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .surfaceVariant
+                          .withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
                   IconButton.filled(
-                      onPressed: () => _onPressAddProduct(context),
-                      icon: const Icon(Icons.add))
+                    onPressed: () => _onPressAddProduct(context),
+                    icon: const Icon(Icons.add),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 16),
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 5,
-                ),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
                 itemCount: notifier.listOrderItem!.length,
                 itemBuilder: (context, index) {
                   final item = notifier.listOrderItem![index];
                   return _itemOrderLayout(context, item);
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 16),
               SizedBox(
-                  width: double.maxFinite,
-                  child: FilledButton(
-                      onPressed: () => _onPressCheckout(context),
-                      child: const Text('Checkout')))
+                width: double.maxFinite,
+                child: FilledButton(
+                  onPressed: () => _onPressCheckout(context),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 6,
+                    shadowColor:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  child: Text(
+                    'Checkout',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontSize: 16,
+                          letterSpacing: 0.5,
+                        ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -110,67 +180,115 @@ class InputOrderScreen extends AppWidget<InputOrderNotifier, void, void> {
 
   _itemOrderLayout(BuildContext context, ProductItemOrderEntity item) {
     return Card(
-      elevation: 3,
-      color: Colors.grey.shade100,
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Container(
-        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-            border: Border.all(
-                color: GlobalHelper.getColorScheme(context).shadow, width: 1),
-            borderRadius: BorderRadius.circular(10)),
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Row(
               children: [
                 Expanded(
-                    child: Text(
-                  item.name,
-                  style: GlobalHelper.getTextTheme(context,
-                      appTextStyle: AppTextStyle.LABEL_LARGE),
-                )),
+                  child: Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                ),
                 Text(
                   NumberHelper.formatIdr(item.price),
-                  style: GlobalHelper.getTextTheme(context,
-                          appTextStyle: AppTextStyle.BODY_LARGE)
-                      ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: GlobalHelper.getColorScheme(context).primary),
-                )
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               children: [
                 Text(
                   'Stok : ${item.stock}',
-                  style: GlobalHelper.getTextTheme(context,
-                      appTextStyle: AppTextStyle.BODY_MEDIUM),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                 ),
                 const Expanded(child: SizedBox()),
                 IconButton.outlined(
-                    onPressed: () => _onPressRemoveQuantity(item),
-                    icon: const Icon(Icons.remove)),
+                  onPressed: () => _onPressRemoveQuantity(item),
+                  icon: const Icon(Icons.remove),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .surfaceVariant
+                        .withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          color: GlobalHelper.getColorScheme(context).shadow,
-                          width: 0.5),
-                      borderRadius: BorderRadius.circular(4)),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .surfaceVariant
+                        .withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
                   child: Text(
                     item.quantity.toString(),
-                    style: GlobalHelper.getTextTheme(context,
-                        appTextStyle: AppTextStyle.BODY_LARGE),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                   ),
                 ),
                 IconButton.outlined(
-                    onPressed: (item.stock != null &&
-                            item.stock! > 0 &&
-                            item.stock! > item.quantity)
-                        ? () => _onPressAddQuantity(item)
-                        : null,
-                    icon: const Icon(Icons.add))
+                  onPressed: (item.stock != null &&
+                          item.stock! > 0 &&
+                          item.stock! > item.quantity)
+                      ? () => _onPressAddQuantity(item)
+                      : null,
+                  icon: const Icon(Icons.add),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .surfaceVariant
+                        .withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -179,75 +297,104 @@ class InputOrderScreen extends AppWidget<InputOrderNotifier, void, void> {
 
   _showDialogCustomer(BuildContext context) {
     DialogHelper.showBottomSheetDialog(
-        context: context,
-        title: 'Pembeli',
-        content: Column(
-          children: [
-            TextField(
-              controller: notifier.nameController,
-              decoration: InputDecoration(
-                  label: const Text('Nama'),
-                  border: const OutlineInputBorder(),
-                  errorText: notifier.errorCustomer[InputOrderNotifier.NAME]),
+      context: context,
+      title: 'Pembeli',
+      content: Column(
+        children: [
+          TextField(
+            controller: notifier.nameController,
+            decoration: InputDecoration(
+              label: const Text('Nama'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              errorText: notifier.errorCustomer[InputOrderNotifier.NAME],
             ),
-            const SizedBox(
-              height: 10,
+          ),
+          const SizedBox(height: 16),
+          DropdownMenu<String>(
+            expandedInsets: const EdgeInsets.symmetric(horizontal: 1),
+            label: const Text('Gender'),
+            dropdownMenuEntries: notifier.genderListDropdown ?? [],
+            controller: notifier.genderController,
+            errorText: notifier.errorCustomer[InputOrderNotifier.GENDER],
+            // initialSelection: notifier.genderController.text == 'Jenis Kelamin' ? null : notifier.genderController.text,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: notifier.notesController,
+            decoration: InputDecoration(
+              label: const Text('Notes'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            DropdownMenu<String>(
-              expandedInsets: const EdgeInsets.symmetric(horizontal: 1),
-              label: const Text('Gender'),
-              dropdownMenuEntries: notifier.genderListDropdown ?? [],
-              controller: notifier.genderController,
-              errorText: notifier.errorCustomer[InputOrderNotifier.GENDER],
-              // initialSelection: notifier.genderController.text == 'Jenis Kelamin' ? null : notifier.genderController.text,
+            maxLines: null,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: notifier.emailController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              label: const Text('Email'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            const SizedBox(
-              height: 10,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: notifier.phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              label: const Text('Phone'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            TextField(
-              controller: notifier.notesController,
-              decoration: const InputDecoration(
-                  label: Text('Notes'), border: OutlineInputBorder()),
-              maxLines: null,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            readOnly: true,
+            onTap: () => _onPressBirthDay(context),
+            controller: notifier.birthdayController,
+            decoration: InputDecoration(
+              label: const Text('Birthday'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            const SizedBox(
-              height: 10,
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.maxFinite,
+            child: FilledButton(
+              onPressed: () => _onPressSaveCustomer(context),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                elevation: 4,
+                shadowColor:
+                    Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
+              child: Text(
+                'Simpan',
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontSize: 16,
+                      letterSpacing: 0.5,
+                    ),
+              ),
             ),
-            TextField(
-              controller: notifier.emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  label: Text('Email'), border: OutlineInputBorder()),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: notifier.phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                  label: Text('Phone'), border: OutlineInputBorder()),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              readOnly: true,
-              onTap: () => _onPressBirthDay(context),
-              controller: notifier.birthdayController,
-              decoration: const InputDecoration(
-                  label: Text('Birthday'), border: OutlineInputBorder()),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-                width: double.maxFinite,
-                child: FilledButton(
-                    onPressed: () => _onPressSaveCustomer(context),
-                    child: const Text('Simpan')))
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   _onPressBirthDay(BuildContext context) async {

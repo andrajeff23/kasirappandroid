@@ -14,186 +14,275 @@ class DetailOrderScreen extends AppWidget<DetailOrderNotifier, int, void> {
   @override
   AppBar? appBarBuild(BuildContext context) {
     return AppBar(
-      elevation: 5,
       automaticallyImplyLeading: false,
-      title:  Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      foregroundColor: Theme.of(context).colorScheme.onSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios_new_outlined)),
-          SizedBox(width: 80,),
-          const Icon(Icons.receipt),
-          const SizedBox(
-            width: 10,
+          Icon(Icons.receipt, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 12),
+          Text(
+            'Detail order',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
           ),
-          Text('Detail order',style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),),
-                      SizedBox(width: 40,)
         ],
       ),
+      actions: [
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close),
+          style: IconButton.styleFrom(
+            backgroundColor:
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+      ],
     );
   }
 
   @override
   Widget bodyBuild(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        children: [
-          _customerLayout(context),
-          Container(
-            height: 3,
-            margin: const EdgeInsets.symmetric(vertical: 3),
-            color: GlobalHelper.getColorScheme(context).outline,
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.9),
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+              Theme.of(context).colorScheme.surface.withOpacity(0.95),
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 0.3, 0.7, 1.0],
           ),
-          _productLayout(context),
-          Container(
-            height: 3,
-            margin: const EdgeInsets.symmetric(vertical: 3),
-            color: GlobalHelper.getColorScheme(context).outline,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              _customerLayout(context),
+              Container(
+                height: 3,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              _productLayout(context),
+              Container(
+                height: 3,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              _paymentLayout(context),
+              const SizedBox(height: 30),
+              Container(
+                width: double.maxFinite,
+                padding: const EdgeInsets.all(16),
+                child: FilledButton(
+                  onPressed: () => _onPressPrint(context),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 4,
+                    shadowColor:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  child: Text(
+                    'Print invoice',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontSize: 16,
+                          letterSpacing: 0.5,
+                        ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          _paymentLayout(context),
-          const SizedBox(
-            height: 30,
-          ),
-          Container(
-            width: double.maxFinite,
-            padding: const EdgeInsets.all(10),
-            child: FilledButton(
-                onPressed: () => _onPressPrint(context),
-                child: const Text('Print invoice')),
-          )
-        ],
+        ),
       ),
     );
   }
 
   _customerLayout(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Pembeli',
-            style: GlobalHelper.getTextTheme(context,
-                appTextStyle: AppTextStyle.TITLE_MEDIUM),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.person),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(': ${notifier.order!.name}')
+    return Card(
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
             ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          const SizedBox(
-            height: 5,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            width: 1,
           ),
-          Row(
-            children: [
-              Icon((notifier.order!.gender == CheckoutNotifier.MALE)
-                  ? Icons.male
-                  : Icons.female),
-              const SizedBox(
-                width: 3,
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Pembeli',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.person,
+                    color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(': ${notifier.order!.name}',
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(
+                    (notifier.order!.gender == CheckoutNotifier.MALE)
+                        ? Icons.male
+                        : Icons.female,
+                    color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(
+                  ': ${(notifier.order!.gender == CheckoutNotifier.MALE) ? 'Laki-laki' : 'Perempuan'}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.email, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(': ${notifier.order!.email ?? '-'}',
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.phone, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(': ${notifier.order!.phone ?? '-'}',
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.event, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(
+                  ': ${(notifier.order!.birthday != null) ? DateTimeHelper.formatDateTimeFromString(dateTimeString: notifier.order!.birthday!, format: 'dd MMM yyyy') : '-'}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Notes : ',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 24),
+              child: Text(
+                notifier.order!.note ?? '-',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              Text(
-                  ': ${(notifier.order!.gender == CheckoutNotifier.MALE) ? 'Laki-laki' : 'Perempuan'}')
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.email),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(': ${notifier.order!.email ?? '-'}')
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.phone),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(': ${notifier.order!.phone ?? '-'}')
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.event),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(
-                  ': ${(notifier.order!.birthday != null) ? DateTimeHelper.formatDateTimeFromString(dateTimeString: notifier.order!.birthday!, format: 'dd MMM yyyy') : '-'}')
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          const Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text('Notes : '),
-          ),
-          Row(
-            children: [
-              const SizedBox(
-                width: 25,
-              ),
-              Expanded(child: Text(notifier.order!.note ?? '-'))
-            ],
-          )
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   _productLayout(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Produk Dipesan',
-            style: GlobalHelper.getTextTheme(context,
-                appTextStyle: AppTextStyle.TITLE_MEDIUM),
+    return Card(
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          const SizedBox(
-            height: 10,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            width: 1,
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => const SizedBox(
-              height: 5,
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Produk Dipesan',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
-            itemCount: notifier.order!.items.length,
-            itemBuilder: (context, index) {
-              final item = notifier.order!.items[index];
-              return _itemProductLayout(context, item);
-            },
-          )
-        ],
+            const SizedBox(height: 12),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+              itemCount: notifier.order!.items.length,
+              itemBuilder: (context, index) {
+                final item = notifier.order!.items[index];
+                return _itemProductLayout(context, item);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
