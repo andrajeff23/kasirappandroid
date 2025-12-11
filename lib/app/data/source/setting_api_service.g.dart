@@ -13,7 +13,9 @@ class _SettingApiService implements SettingApiService {
     this._dio, {
     this.baseUrl,
     this.errorLogger,
-  });
+  }) {
+    baseUrl ??= 'https://192.168.110.58:8000';
+  }
 
   final Dio _dio;
 

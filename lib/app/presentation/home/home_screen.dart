@@ -10,8 +10,6 @@ import 'package:dewakoding_kasir/core/helper/number_helper.dart';
 import 'package:dewakoding_kasir/core/widget/app_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entity/product.dart';
-
 class HomeScreen extends AppWidget<HomeNotifier, void, void> {
   HomeScreen({super.key});
 
@@ -23,7 +21,10 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
-                children: [_headerLayout(context), _orderTodayLayout(context)],
+                children: [
+                  _headerLayout(context),
+                  _orderTodayLayout(context),
+                ],
               ),
             )));
   }
@@ -53,15 +54,16 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
                   onTap: () => _onPressAvatar(context),
                   child: CircleAvatar(
                     radius: 40,
-                    backgroundColor: GlobalHelper.getColorScheme(context).primary,
+                    backgroundColor:
+                        GlobalHelper.getColorScheme(context).primary,
                     child: Text(
                       notifier.name.substring(0, 1),
                       style: GlobalHelper.getTextTheme(context,
                               appTextStyle: AppTextStyle.HEADLINE_LARGE)
                           ?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color:
-                                  GlobalHelper.getColorScheme(context).onPrimary),
+                              color: GlobalHelper.getColorScheme(context)
+                                  .onPrimary),
                     ),
                   ),
                 ),
@@ -77,8 +79,8 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
                         style: GlobalHelper.getTextTheme(context,
                                 appTextStyle: AppTextStyle.TITLE_LARGE)
                             ?.copyWith(
-                                color:
-                                    GlobalHelper.getColorScheme(context).primary,
+                                color: GlobalHelper.getColorScheme(context)
+                                    .primary,
                                 fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
@@ -107,7 +109,7 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all( 2),
+          padding: const EdgeInsets.all(2),
           child: Container(
             decoration: BoxDecoration(
               // color: GlobalHelper.getColorScheme(context).primary,
@@ -125,7 +127,8 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
                         style: GlobalHelper.getTextTheme(context,
                                 appTextStyle: AppTextStyle.TITLE_LARGE)
                             ?.copyWith(
-                                color: GlobalHelper.getColorScheme(context).primary,
+                                color: GlobalHelper.getColorScheme(context)
+                                    .primary,
                                 fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -200,7 +203,7 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    // '${NumberHelper.formatIdr(item.totalPrice!)} (${item.items.fold<int>(0, (sum, productItem) => sum + (productItem.qty?.toInt() ?? 0))} item)',
+                    // '${NumberHelper.formatIdr(item.totalPrice!)} (${item.items.fold<int>(0, (sum, productItem) => sum + productItem.quantity)}) item',
                     '${NumberHelper.formatIdr(item.totalPrice!)} (${item.items.length} item)',
                     style: GlobalHelper.getTextTheme(context,
                             appTextStyle: AppTextStyle.BODY_LARGE)
@@ -209,7 +212,8 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
                             fontWeight: FontWeight.bold),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
                     decoration: BoxDecoration(
                         border: Border.all(
                             width: 1,
@@ -221,8 +225,8 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
                       style: GlobalHelper.getTextTheme(context,
                               appTextStyle: AppTextStyle.BODY_SMALL)
                           ?.copyWith(
-                              color:
-                                  GlobalHelper.getColorScheme(context).secondary),
+                              color: GlobalHelper.getColorScheme(context)
+                                  .secondary),
                     ),
                   )
                 ],
