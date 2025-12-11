@@ -23,9 +23,9 @@ class InputOrderNotifier extends AppProvider {
     const DropdownMenuEntry<String>(value: 'Female', label: 'Perempuan')
   ];
 
+  final TextEditingController _genderController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
@@ -33,7 +33,8 @@ class InputOrderNotifier extends AppProvider {
   bool get isShowCustomer => _isShowCustomer;
   HashMap<String, String> get errorCustomer => _errorCustomer;
   List<ProductItemOrderEntity>? get listOrderItem => _listOrderItem;
-  List<DropdownMenuEntry<String>>? get genderListDropdown => _genderListDropdown;
+  List<DropdownMenuEntry<String>>? get genderListDropdown =>
+      _genderListDropdown;
 
   TextEditingController get nameController => _nameController;
   TextEditingController get emailController => _emailController;
@@ -53,7 +54,7 @@ class InputOrderNotifier extends AppProvider {
         : '';
     return OrderEntity(
         name: _nameController.text,
-        gender: genderValue,
+        gender: genderValue ?? '',
         email: _emailController.text,
         phone: _phoneController.text,
         birthday: _birthdayController.text,

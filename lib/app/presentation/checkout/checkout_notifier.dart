@@ -14,8 +14,8 @@ class CheckoutNotifier extends AppProvider {
     init();
   }
 
-  static const String MALE = 'male';
-  static const String FEMALE = 'female';
+  static const String MALE = 'Male';
+  static const String FEMALE = 'Female';
 
   bool _isSuccess = false;
 
@@ -50,7 +50,7 @@ class CheckoutNotifier extends AppProvider {
   init() async {
     await _getPaymentMethod();
     await _updateValuePayment();
-    // await updateChangeAmount();    
+    // await updateChangeAmount();
   }
 
   _getPaymentMethod() async {
