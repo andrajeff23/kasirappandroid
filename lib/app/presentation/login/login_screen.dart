@@ -27,10 +27,10 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
         ),
         child: SingleChildScrollView(
           padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            top: 24,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+            left: 6,
+            right: 6,
+            top: 6,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 6,
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -136,7 +136,7 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
                           ),
                           const SizedBox(height: 24),
                           Text(
-                            'Welcome Back',
+                            'Grocery Apps',
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
@@ -149,7 +149,7 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Please sign in to your account',
+                            'Silahkan Login untuk melanjutkan',
                             style:
                                 Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       color: Theme.of(context)
@@ -162,8 +162,8 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
                           TextField(
                             controller: notifier.emailController,
                             decoration: InputDecoration(
-                              labelText: 'Email Address',
-                              hintText: 'Enter your email',
+                              labelText: 'Email',
+                              hintText: 'Masukkan Email',
                               prefixIcon: Icon(Icons.email_outlined,
                                   color: Theme.of(context).colorScheme.primary),
                               border: OutlineInputBorder(
@@ -192,7 +192,7 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Password',
-                              hintText: 'Enter your password',
+                              hintText: 'Masukkan Password',
                               prefixIcon: Icon(Icons.lock_outline,
                                   color: Theme.of(context).colorScheme.primary),
                               border: OutlineInputBorder(
@@ -237,12 +237,15 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
                                     Theme.of(context).colorScheme.onPrimary,
                               ),
                               child: Text(
-                                'Sign In',
+                                'Masuk',
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelLarge
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
                                       fontSize: 16,
                                       letterSpacing: 0.5,
                                     ),
@@ -293,7 +296,13 @@ class LoginScreen extends AppWidget<LoginNotifier, void, void> {
                 width: double.maxFinite,
                 child: FilledButton(
                     onPressed: () => _onPressSaveBaseUrl(context),
-                    child: const Text('Simpan')))
+                    child: const Text(
+                      'Simpan',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )))
           ],
         ));
   }

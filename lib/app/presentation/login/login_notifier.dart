@@ -34,7 +34,8 @@ class LoginNotifier extends AppProvider {
     showLoading();
     final baseUrlPref = await SharedPreferencesHelper.getString(PREF_BASE_URL);
     if (baseUrlPref == null) {
-      _baseUrlController.text = 'http://192.168.110.58:8000';
+      // _baseUrlController.text = 'http://192.168.110.58:8000';
+      _baseUrlController.text = 'http://10.241.88.83:8000';
       await SharedPreferencesHelper.setString(
           PREF_BASE_URL, _baseUrlController.text);
     } else {

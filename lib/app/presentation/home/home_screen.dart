@@ -179,7 +179,7 @@ class HomeScreen extends AppWidget<HomeNotifier, void, void> {
               children: [
                 Expanded(
                   child: Text(
-                    'Order hari ini',
+                    'Order All',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
